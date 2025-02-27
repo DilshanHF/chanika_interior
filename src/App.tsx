@@ -19,7 +19,7 @@ import DashboardLayout from './components/layouts/DashboardLayout';
 
 function App() {
   let { isAuthenticated } = useSelector((state: RootState) => state.auth);
-  isAuthenticated = false
+  isAuthenticated = true
 
   return (
     <Router>
