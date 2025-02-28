@@ -19,7 +19,7 @@ export const login = createAsyncThunk(
   'auth/login',
   async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:300/api/auth/login', { email, password });
+      const response = await axios.post('http://localhost:3000/api/auth/login', { email, password });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       return response.data;
@@ -33,7 +33,7 @@ export const signup = createAsyncThunk(
   'auth/signup',
   async ({ name, email, password }: { name: string; email: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:300/api/auth/signup', { name, email, password });
+      const response = await axios.post('http://localhost:3000/api/auth/register', { name, email, password });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       return response.data;

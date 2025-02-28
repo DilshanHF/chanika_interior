@@ -27,7 +27,7 @@ const initialState: ItemState = {
 export const fetchItems = createAsyncThunk('items/fetchItems', async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://localhost:300/api/items', {
+    const response = await axios.get('http://localhost:3000/api/items', {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
@@ -41,7 +41,7 @@ export const addItem = createAsyncThunk(
   async (item: Omit<Item, 'id'>, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:300/api/items', item, {
+      const response = await axios.post('http://localhost:3000/api/items', item, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
@@ -56,7 +56,7 @@ export const updateItem = createAsyncThunk(
   async (item: Item, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(`http://localhost:300/api/items/${item.id}`, item, {
+      const response = await axios.put(`http://localhost:3000/api/items/${item._id}`, item, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
@@ -71,7 +71,7 @@ export const deleteItem = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:300/api/items/${id}`, {
+      await axios.delete(`http://localhost:3000/api/items/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return id;
@@ -109,7 +109,7 @@ const itemSlice = createSlice({
         }
       })
       .addCase(deleteItem.fulfilled, (state, action) => {
-        state.items = state.items.filter((item) => item.id !== action.payload);
+        state.items = state.items.filter((item) => item._id !== action.payload);
       });
   },
 });

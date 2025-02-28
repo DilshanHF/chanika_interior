@@ -33,7 +33,7 @@ const Dashboard: React.FC = () => {
     { name: 'Total Orders', value: orders.length, icon: <ClipboardList className="h-6 w-6 text-purple-500" /> },
     {
       name: 'Revenue',
-      value: `$${orders.reduce((sum, order) => sum + order.total, 0).toLocaleString()}`,
+      value: `LKR ${orders.reduce((sum, order) => sum + order.total, 0).toLocaleString()}`,
       icon: <TrendingUp className="h-6 w-6 text-yellow-500" />,
     },
   ];
@@ -86,7 +86,7 @@ const Dashboard: React.FC = () => {
         <h2 className="text-lg font-medium text-gray-900 mb-4">Recent Items</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {items.slice(0, 8).map((item) => (
-            <div key={item.id} className="border rounded-lg overflow-hidden">
+            <div key={item._id} className="border rounded-lg overflow-hidden">
               <img
                 src={item.image || `https://source.unsplash.com/random/300x200/?furniture,${item.category}`}
                 alt={item.name}
@@ -95,7 +95,7 @@ const Dashboard: React.FC = () => {
               <div className="p-4">
                 <h3 className="font-medium text-gray-900">{item.name}</h3>
                 <p className="text-sm text-gray-500">{item.category}</p>
-                <p className="mt-1 font-bold">${item.price.toFixed(2)}</p>
+                <p className="mt-1 font-bold">LKR {item.price.toFixed(2)}</p>
               </div>
             </div>
           ))}

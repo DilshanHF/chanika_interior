@@ -39,7 +39,7 @@ const initialState: OrderState = {
 export const fetchOrders = createAsyncThunk('orders/fetchOrders', async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://localhost:300/api/orders', {
+    const response = await axios.get('http://localhost:3000/api/orders', {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
@@ -53,7 +53,7 @@ export const fetchOrderById = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:300/api/orders/${id}`, {
+      const response = await axios.get(`http://localhost:3000/api/orders/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
@@ -72,7 +72,7 @@ export const createOrder = createAsyncThunk(
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:300/api/orders',
+        'http://localhost:3000/api/orders',
         { customerId, orderItems },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -91,7 +91,7 @@ export const updateOrderStatus = createAsyncThunk(
     try {
       const token = localStorage.getItem('token');
       const response = await axios.patch(
-        `http://localhost:300/api/orders/${id}`,
+        `http://localhost:3000/api/orders/${id}`,
         { status },
         {
           headers: { Authorization: `Bearer ${token}` },

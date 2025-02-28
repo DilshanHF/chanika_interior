@@ -19,14 +19,13 @@ import DashboardLayout from './components/layouts/DashboardLayout';
 
 function App() {
   let { isAuthenticated } = useSelector((state: RootState) => state.auth);
-  isAuthenticated = true
 
   return (
     <Router>
       <Routes>
         {/* Auth Routes */}
         <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" />} />
-        <Route path="/signup" element={!isAuthenticated ? <Signup /> : <Navigate to="/" />} />
+        <Route path="/signup" element={!isAuthenticated ? <Signup /> : <Navigate to="/login" />} />
         
         {/* Protected Routes */}
         <Route element={<DashboardLayout />}>

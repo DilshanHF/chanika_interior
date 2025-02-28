@@ -100,7 +100,7 @@ const OrderDetails: React.FC = () => {
           <dl className="sm:divide-y sm:divide-gray-200">
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Order ID</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{selectedOrder.id}</dd>
+              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{selectedOrder._id}</dd>
             </div>
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Date</dt>
@@ -111,19 +111,19 @@ const OrderDetails: React.FC = () => {
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Customer</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {selectedOrder.customer?.name || 'Unknown'}
+                {selectedOrder.customerId?.name || 'Unknown'}
               </dd>
             </div>
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Email</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {selectedOrder.customer?.email || 'N/A'}
+                {selectedOrder.customerId?.email || 'N/A'}
               </dd>
             </div>
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Telephone</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {selectedOrder.customer?.telephone || 'N/A'}
+                {selectedOrder.customerId?.telephone || 'N/A'}
               </dd>
             </div>
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -180,25 +180,25 @@ const OrderDetails: React.FC = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {selectedOrder.orderItems && selectedOrder.orderItems.length > 0 ? (
                 selectedOrder.orderItems.map((orderItem) => (
-                  <tr key={orderItem.id}>
+                  <tr key={orderItem._id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
                           <img
                             className="h-10 w-10 rounded-full object-cover"
                             src={
-                              orderItem.item?.image ||
-                              `https://source.unsplash.com/random/100x100/?furniture,${orderItem.item?.category || 'chair'}`
+                              orderItem.itemId?.image ||
+                              `https://source.unsplash.com/random/100x100/?furniture,${orderItem.itemId?.category || 'chair'}`
                             }
                             alt=""
                           />
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">
-                            {orderItem.item?.name || 'Unknown Item'}
+                            {orderItem.itemId?.name || 'Unknown Item'}
                           </div>
                           <div className="text-sm text-gray-500">
-                            {orderItem.item?.category || 'Unknown Category'}
+                            {orderItem.itemId?.category || 'Unknown Category'}
                           </div>
                         </div>
                       </div>

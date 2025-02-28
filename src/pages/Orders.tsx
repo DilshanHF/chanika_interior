@@ -2,28 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store';
-import { 
-  fetchOrders, 
-  updateOrderStatus,
-  Order
-} from '../store/slices/orderSlice';
-import { 
-  fetchCustomers,
-  Customer
-} from '../store/slices/customerSlice';
 import {
-  fetchItems,
-  Item
-} from '../store/slices/itemSlice';
+  fetchOrders,
+  updateOrderStatus,
+  createOrder, // Add this import
+  Order,
+} from '../store/slices/orderSlice';
+import { fetchCustomers, Customer } from '../store/slices/customerSlice';
+import { fetchItems, Item } from '../store/slices/itemSlice';
 import {
   addToCart,
   removeFromCart,
   updateQuantity,
   setCustomerId,
   clearCart,
-  CartItem
+  CartItem,
 } from '../store/slices/cartSlice';
-import {   Search,   ShoppingCart,   Plus,   Minus,   X,   Check } from 'lucide-react';
+import { Search, ShoppingCart, Plus, Minus, X, Check } from 'lucide-react';
 
 const Orders: React.FC = () => {
   const dispatch = useDispatch();
@@ -32,7 +27,7 @@ const Orders: React.FC = () => {
   const { customers } = useSelector((state: RootState) => state.customers);
   const { items } = useSelector((state: RootState) => state.items);
   const { items: cartItems, customerId } = useSelector((state: RootState) => state.cart);
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<string>('');
@@ -50,19 +45,17 @@ const Orders: React.FC = () => {
     }
   }, [customerId]);
 
-  const filteredOrders = orders.filter(
-    (order) => {
-      const customer = order.customer?.name.toLowerCase().includes(searchTerm.toLowerCase());
-      const orderId = order.id.toLowerCase().includes(searchTerm.toLowerCase());
-      const date = new Date(order.date).toLocaleDateString().includes(searchTerm);
-      return customer || orderId || date;
-    }
-  );
+  const filteredOrders = orders.filter((order) => {
+    const customer = order.customerId?.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const orderId = order._id.toLowerCase().includes(searchTerm.toLowerCase());
+    const date = new Date(order.date).toLocaleDateString().includes(searchTerm);
+    return customer || orderId || date;
+  });
 
   const filteredItems = items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(searchItemTerm.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchItemTerm.toLowerCase())
+      (item) =>
+          item.name.toLowerCase().includes(searchItemTerm.toLowerCase()) ||
+          item.category.toLowerCase().includes(searchItemTerm.toLowerCase())
   );
 
   const handleAddToCart = (item: Item) => {
@@ -98,14 +91,15 @@ const Orders: React.FC = () => {
 
     try {
       const orderItems = cartItems.map((item) => ({
-        itemId: item.item.id,
+        itemId: item.item._id,
         quantity: item.quantity,
-        price: item.item.price
+        price: item.item.price,
       }));
 
-      // Here you would dispatch the createOrder action
-      // await dispatch(createOrder({ customerId: selectedCustomer, orderItems }) as any);
-      
+      await dispatch(
+          createOrder({ customerId: selectedCustomer, orderItems: orderItems }) as any
+      );
+
       alert('Order created successfully!');
       dispatch(clearCart());
       setIsCartOpen(false);
@@ -181,12 +175,12 @@ const Orders: React.FC = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredOrders.length > 0 ? (
                 filteredOrders.map((order) => (
-                  <tr key={order.id}>
+                  <tr key={order._id}>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{order.id.substring(0, 8)}...</div>
+                      <div className="text-sm font-medium text-gray-900">{order._id.substring(0, 8)}...</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{order.customer?.name || 'Unknown'}</div>
+                      <div className="text-sm text-gray-900">{order.customerId?.name || 'Unknown'}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-500">
@@ -194,12 +188,12 @@ const Orders: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">${order.total.toFixed(2)}</div>
+                      <div className="text-sm font-medium text-gray-900">LKR {order.total.toFixed(2)}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <select
                         value={order.status}
-                        onChange={(e) => handleStatusChange(order.id, e.target.value as Order['status'])}
+                        onChange={(e) => handleStatusChange(order._id, e.target.value as Order['status'])}
                         className={`text-sm rounded-full px-3 py-1 font-medium ${
                           order.status === 'completed'
                             ? 'bg-green-100 text-green-800'
@@ -208,14 +202,12 @@ const Orders: React.FC = () => {
                             : 'bg-yellow-100 text-yellow-800'
                         }`}
                       >
-                        <option value="pending">Pending</option>
                         <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
                       </select>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
-                        onClick={() => handleViewOrderDetails(order.id)}
+                        onClick={() => handleViewOrderDetails(order._id)}
                         className="text-indigo-600 hover:text-indigo-900"
                       >
                         View Details
@@ -269,7 +261,7 @@ const Orders: React.FC = () => {
                         >
                           <option value="">Select a customer</option>
                           {customers.map((customer) => (
-                            <option key={customer.id} value={customer.id}>
+                            <option key={customer._id} value={customer._id}>
                               {customer.name}
                             </option>
                           ))}
@@ -293,10 +285,10 @@ const Orders: React.FC = () => {
 
                       <div className="grid grid-cols-2 gap-4 mb-6 max-h-60 overflow-y-auto">
                         {filteredItems.map((item) => (
-                          <div key={item.id} className="border rounded-md p-2 flex flex-col">
+                          <div key={item._id} className="border rounded-md p-2 flex flex-col">
                             <div className="text-sm font-medium">{item.name}</div>
                             <div className="text-xs text-gray-500">{item.category}</div>
-                            <div className="text-sm font-bold mt-1">${item.price.toFixed(2)}</div>
+                            <div className="text-sm font-bold mt-1">LKR {item.price.toFixed(2)}</div>
                             <button
                               onClick={() => handleAddToCart(item)}
                               className="mt-2 bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-xs flex items-center justify-center"
@@ -315,12 +307,12 @@ const Orders: React.FC = () => {
                           <div className="flow-root">
                             <ul className="-my-6 divide-y divide-gray-200">
                               {cartItems.map((cartItem) => (
-                                <li key={cartItem.item.id} className="py-6 flex">
+                                <li key={cartItem.item._id} className="py-6 flex">
                                   <div className="flex-1 flex flex-col">
                                     <div>
                                       <div className="flex justify-between text-base font-medium text-gray-900">
                                         <h3>{cartItem.item.name}</h3>
-                                        <p className="ml-4">${(cartItem.item.price * cartItem.quantity).toFixed(2)}</p>
+                                        <p className="ml-4">LKR {(cartItem.item.price * cartItem.quantity).toFixed(2)}</p>
                                       </div>
                                       <p className="mt-1 text-sm text-gray-500">{cartItem.item.category}</p>
                                     </div>
@@ -363,7 +355,7 @@ const Orders: React.FC = () => {
                   <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                     <div className="flex justify-between text-base font-medium text-gray-900 mb-4">
                       <p>Subtotal</p>
-                      <p>${calculateTotal().toFixed(2)}</p>
+                      <p>LKR {calculateTotal().toFixed(2)}</p>
                     </div>
                     <button
                       type="button"

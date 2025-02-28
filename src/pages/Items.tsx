@@ -68,7 +68,7 @@ const Items: React.FC = () => {
       return;
     }
 
-    if (isEditing && currentItem.id) {
+    if (isEditing && currentItem._id) {
       await dispatch(updateItem(currentItem as Item) as any);
     } else {
       await dispatch(addItem(currentItem as Omit<Item, 'id'>) as any);
@@ -117,7 +117,7 @@ const Items: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredItems.length > 0 ? (
             filteredItems.map((item) => (
-              <div key={item.id} className="bg-white rounded-lg shadow overflow-hidden">
+              <div key={item._id} className="bg-white rounded-lg shadow overflow-hidden">
                 <img
                   src={item.image || `https://source.unsplash.com/random/300x200/?furniture,${item.category}`}
                   alt={item.name}
@@ -126,7 +126,7 @@ const Items: React.FC = () => {
                 <div className="p-4">
                   <h3 className="text-lg font-medium text-gray-900">{item.name}</h3>
                   <p className="text-sm text-gray-500">{item.category}</p>
-                  <p className="text-lg font-bold text-gray-900 mt-2">${item.price.toFixed(2)}</p>
+                  <p className="text-lg font-bold text-gray-900 mt-2">LKR {item.price.toFixed(2)}</p>
                   <p className="text-sm text-gray-600 mt-2 line-clamp-2">{item.remark}</p>
                   <div className="mt-4 flex justify-end space-x-2">
                     <button
@@ -136,7 +136,7 @@ const Items: React.FC = () => {
                       <Edit className="w-5 h-5" />
                     </button>
                     <button
-                      onClick={() => handleDelete(item.id)}
+                      onClick={() => handleDelete(item._id)}
                       className="p-2 text-red-600 hover:text-red-900"
                     >
                       <Trash2 className="w-5 h-5" />
@@ -202,7 +202,7 @@ const Items: React.FC = () => {
                 </div>
                 <div>
                   <label htmlFor="price" className="block text-sm font-medium text-gray-700">
-                    Price ($)
+                    Price (LKR)
                   </label>
                   <input
                     type="number"

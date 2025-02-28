@@ -26,7 +26,7 @@ const Signup: React.FC = () => {
     setPasswordError('');
     const result = await dispatch(signup({ name, email, password }) as any);
     if (result.meta.requestStatus === 'fulfilled') {
-      navigate('/');
+      navigate('/login');
     }
   };
 
@@ -38,7 +38,7 @@ const Signup: React.FC = () => {
             <Sofa className="h-12 w-12 text-indigo-600" />
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Chanikma Interior
+            CHANIKMA INTERIOR
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Create your admin account

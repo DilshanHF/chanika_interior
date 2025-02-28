@@ -52,7 +52,7 @@ const DashboardLayout: React.FC = () => {
       >
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-center h-16 border-b">
-            <h1 className="text-xl font-bold text-gray-800">Chanikma Interior</h1>
+            <h1 className="text-xl font-bold text-gray-800">CHANIKMA INTERIOR</h1>
           </div>
           <div className="flex-1 overflow-y-auto py-4">
             <nav className="px-2 space-y-1">

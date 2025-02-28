@@ -23,7 +23,7 @@ const initialState: CustomerState = {
 export const fetchCustomers = createAsyncThunk('customers/fetchCustomers', async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://localhost:300/api/customers', {
+    const response = await axios.get('http://localhost:3000/api/customers', {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
@@ -37,7 +37,7 @@ export const addCustomer = createAsyncThunk(
   async (customer: Omit<Customer, 'id'>, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:300/api/customers', customer, {
+      const response = await axios.post('http://localhost:3000/api/customers', customer, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
@@ -52,7 +52,7 @@ export const updateCustomer = createAsyncThunk(
   async (customer: Customer, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(`http://localhost:300/api/customers/${customer.id}`, customer, {
+      const response = await axios.put(`http://localhost:3000/api/customers/${customer._id}`, customer, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
@@ -67,7 +67,7 @@ export const deleteCustomer = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:300/api/customers/${id}`, {
+      await axios.delete(`http://localhost:3000/api/customers/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return id;
@@ -105,7 +105,7 @@ const customerSlice = createSlice({
         }
       })
       .addCase(deleteCustomer.fulfilled, (state, action) => {
-        state.customers = state.customers.filter((customer) => customer.id !== action.payload);
+        state.customers = state.customers.filter((customer) => customer._id !== action.payload);
       });
   },
 });
