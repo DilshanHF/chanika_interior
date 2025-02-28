@@ -25,7 +25,7 @@ function App() {
       <Routes>
         {/* Auth Routes */}
         <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" />} />
-        <Route path="/signup" element={!isAuthenticated ? <Signup /> : <Navigate to="/login" />} />
+        <Route path="/signup" element={!isAuthenticated ? <Signup /> : <Navigate to="/" />} />
         
         {/* Protected Routes */}
         <Route element={<DashboardLayout />}>
